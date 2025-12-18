@@ -13,13 +13,14 @@
       padding: 15px;
       font-size: 16px;
       width: 100%;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
 <h1>YDC</h1>
-<p id="user"></p>
+<p id="status">Загрузка...</p>
 
 <button onclick="activate()">Активировать скидку</button>
 
@@ -27,8 +28,27 @@
   const tg = window.Telegram.WebApp;
   tg.expand();
 
-  document.getElementById("user").innerText =
-    "Привет, " + (tg.initDataUnsafe.user?.first_name || "гость");
+  const user = tg.initDataUnsafe.user;
+
+  fetch("http://localhost:3000/auth/telegram", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      telegram_id: user.id,
+      username: user.username,
+      first_name: user.first_name
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("status").innerText =
+      "Привет, " + user.first_name + "! Ты в системе.";
+  })
+  .catch(err => {
+    document.getElementById("status").innerText =
+      "Ошибка подключения к серверу";
+    console.error(err);
+  });
 
   function activate() {
     alert("Скоро здесь будет QR-код 😎");
