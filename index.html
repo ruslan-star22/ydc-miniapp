@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>YDC</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    button {
+      padding: 15px;
+      font-size: 16px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<h1>YDC</h1>
+<p id="user"></p>
+
+<button onclick="activate()">Активировать скидку</button>
+
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand();
+
+  document.getElementById("user").innerText =
+    "Привет, " + (tg.initDataUnsafe.user?.first_name || "гость");
+
+  function activate() {
+    alert("Скоро здесь будет QR-код 😎");
+  }
+</script>
+
+</body>
+</html>
